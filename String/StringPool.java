@@ -1,3 +1,4 @@
+import java.util.Collections;
 
 public class StringPool{
     public static void main(String[] args) {
@@ -17,6 +18,7 @@ public class StringPool{
 
         // So sánh == sẽ là so sánh đến vị trí tham chiếu
         // So sánh equals sẽ là so sánh giá trị của chuỗi kí tự 
+        
         
     }
 }
