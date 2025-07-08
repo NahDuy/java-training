@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class TryCatchThrow {
     // Phương thức tự kiểm tra và ném Exception nếu điều kiện không thỏa mãn
     static void validateAge(int age) {
