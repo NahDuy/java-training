@@ -16,15 +16,15 @@ class Operation {
     }
 
     public static void main(String args[]) {
-        int num = 4;
-        change1(num);
-        System.out.println("After change1: " + num);
+        // int num = 4;
+        // change1(num);
+        // System.out.println("After change1: " + num);
 
         Operation op = new Operation();
         reassign(op);
         System.out.println("After Reassign: " + op.data);
         System.out.println("Before change2: " + op.data);
-        op.change2(op);
-        System.out.println("After change2: " + op.data);
+        // op.change2(op);
+        // System.out.println("After change2: " + op.data);
     }
 }
