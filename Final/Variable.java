@@ -6,3 +6,9 @@ public class Variable {
         System.out.println("x = " + x);
     }
 }
+//Final Fields 
+static final int MAX_WIDTH = 999;
+//Final Arguments
+public void methodWithFinalArguments(final int x) {
+    x = 1; // lỗi biên dịch
+}

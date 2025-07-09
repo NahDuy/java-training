@@ -1,4 +1,6 @@
 // hành vi trừu tượng
+//modifier public abstract
+//public static final
 interface Vehicle {
     void start();
 }
@@ -32,3 +34,4 @@ public class Interface_Abstract {
         sedan.refuel(); 
     }
 }
+//Abstract class implement interface thì không cần overide

@@ -8,6 +8,8 @@ public class StringPool{
 
         // Tạo trong Java Heap Space
         String str3 = new String("abc");
+        // Tạo thủ công đưa vào pool
+        String str4 = new String("abc").intern();
 
         // So sánh bằng ==
         System.out.println("str1 == str2 : " + (str1 == str2)); // true, cùng tham chiếu trong pool
