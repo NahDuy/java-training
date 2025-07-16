@@ -31,3 +31,6 @@ public class WildCard {
 
     }
 }
+// Nếu muốn thêm vào extends, thì phải khai báo rõ kiểu dữ liệu
+// Dùng generic method với type cụ thể
+// Tạo list mới từ writeOnlyList với kiểu dữ liệu cụ thể
