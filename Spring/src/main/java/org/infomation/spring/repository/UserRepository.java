@@ -1,10 +1,10 @@
-package org.infomation.spring.respository;
+package org.infomation.spring.repository;
 
 import org.infomation.spring.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRespository extends JpaRepository<User, String> {
-
+public interface UserRepository extends JpaRepository<User, String> {
+    boolean existsByUsername(String username);
 }
