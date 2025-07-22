@@ -12,18 +12,18 @@ import org.infomation.spring.dto.request.RefreshRequest;
 import org.infomation.spring.dto.response.AuthenticationResponse;
 import org.infomation.spring.dto.response.IntrospectResponse;
 import org.infomation.spring.entity.InvalidatedToken;
+import org.infomation.spring.entity.User;
 import org.infomation.spring.repository.InvalidatedTokenRepository;
 import org.infomation.spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.util.CollectionUtils;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.StringJoiner;
 import java.util.UUID;
 
 @Service
@@ -64,7 +64,7 @@ public class AuthenticationService {
         boolean authenticated = request.getPassword().equals(user.getPassword());
         if (!authenticated)
             throw new RuntimeException("Authentication failed");
-        var token = generateToken(request.getUsername());
+        var token = generateToken(user);
 
         return AuthenticationResponse.builder()
                 .token(token)
@@ -87,20 +87,20 @@ public class AuthenticationService {
                 userRepository.findByUsername(username)
                         .orElseThrow(() -> new RuntimeException(""));
 
-        var token = generateToken(user.getUsername());
+        var token = generateToken(user);
 
         return AuthenticationResponse.builder().token(token).authenticated(true).build();
     }
-    private String generateToken(String username) {
+    private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .jwtID(UUID.randomUUID().toString())
-                .subject(username)
+                .subject(user.getUsername())
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(validDuration, ChronoUnit.SECONDS).toEpochMilli()
                 ))
-                .claim("userId", "Custom")
+                .claim("scope", buildScope(user))
 
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -129,5 +129,11 @@ public class AuthenticationService {
             throw new RuntimeException("Token expired");
         return signedJWT;
     }
+    private String buildScope(User user){
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if (!CollectionUtils.isEmpty(user.getRoles()))
+            user.getRoles().forEach(stringJoiner::add);
 
+        return stringJoiner.toString();
+    }
 }

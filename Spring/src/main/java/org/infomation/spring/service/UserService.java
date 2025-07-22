@@ -4,11 +4,13 @@ import org.infomation.spring.dto.request.UserCreationRequest;
 import org.infomation.spring.dto.request.UserUpdateRequest;
 import org.infomation.spring.dto.response.UserResponse;
 import org.infomation.spring.entity.User;
+import org.infomation.spring.enums.Role;
 import org.infomation.spring.mapper.UserMappper;
 import org.infomation.spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -18,11 +20,15 @@ public class UserService {
     @Autowired
     UserMappper userMappper;
 
-    public UserResponse createUser(UserCreationRequest user) {
-        if(userRepository.existsByUsername(user.getUsername()))
+    public UserResponse createUser(UserCreationRequest request) {
+        if(userRepository.existsByUsername(request.getUsername()))
             throw new RuntimeException("Username already exists");
-        User userEntity = userMappper.toUser(user);
-        return userMappper.toUserResponse(userRepository.save(userEntity));
+        User user = userMappper.toUser(request);
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.USER.name());
+        user.setRoles(roles);
+
+        return userMappper.toUserResponse(userRepository.save(user));
     }
 
     public UserResponse getUser(String id){
